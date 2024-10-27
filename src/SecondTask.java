@@ -1,80 +1,5 @@
 import java.util.Scanner;
 
-class QuadraticEquation {
-    private double a;
-    private double b;
-    private double c;
-
-    public QuadraticEquation(double a, double b, double c) {
-        this.a = a;
-        this.b = b;
-        this.c = c;
-    }
-
-    public double calculateDiscriminant() {
-        return b * b - 4 * a * c;
-    }
-
-    public String getRoots() {
-        double discriminant = calculateDiscriminant();
-        if (discriminant > 0) {
-            return "Уравнение имеет два различных корня.";
-        } else if (discriminant == 0) {
-            return "Уравнение имеет один корень.";
-        } else {
-            return "Уравнение не имеет действительных корней.";
-        }
-    }
-
-    public double getA() {
-        return a;
-    }
-
-    public double getB() {
-        return b;
-    }
-
-    public double getC() {
-        return c;
-    }
-}
-
-class Menu {
-    private Scanner scanner;
-
-    public Menu(Scanner scanner) {
-        this.scanner = scanner;
-    }
-
-    public void showMainMenu() {
-        System.out.println("\nГлавное меню:");
-        System.out.println("1. Выполнить расчет дискриминанта");
-        System.out.println("2. Информация о программе");
-        System.out.println("3. Информация о разработчике");
-        System.out.println("4. Выход из программы");
-        System.out.print("Выберите пункт меню: ");
-    }
-
-    public int getMenuChoice() {
-        while (true) {
-            if (scanner.hasNextInt()) {
-                return scanner.nextInt();
-            } else {
-                System.out.print("Некорректный ввод. Пожалуйста, введите номер пункта: ");
-                scanner.next();
-            }
-        }
-    }
-
-    public void showProgramInfo() {
-        System.out.println("Эта программа вычисляет дискриминант квадратного уравнения.");
-    }
-
-    public void showDeveloperInfo() {
-        System.out.println("Разработчик: Пименов Александр Алексеевич, РИМ-140970");
-    }
-}
-
 public class SecondTask {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -87,7 +12,7 @@ public class SecondTask {
 
             switch (choice) {
                 case 1:
-                    calculateDiscriminant(scanner);
+                    calculateSolution(scanner);
                     break;
                 case 2:
                     menu.showProgramInfo();
@@ -103,35 +28,50 @@ public class SecondTask {
                     System.out.println("Некорректный выбор. Попробуйте еще раз.");
             }
         }
-        scanner.close();
     }
 
-    private static void calculateDiscriminant(Scanner scanner) {
-        System.out.println("Эта программа вычисляет дискриминант квадратного уравнения ax^2 + bx + c = 0.");
+    private static void calculateSolution(Scanner scanner) {
+        System.out.println("Выберите тип уравнения:");
+        System.out.println("1 - квадратное уравнение");
+        System.out.println("любое другое число - линейное уравнение");
+        System.out.print("Введите номер: ");
 
-        double a = getValidInput(scanner, true, "Введите коэффициент a (не должен быть равен 0): ");
-        double b = getValidInput(scanner, false, "Введите коэффициент b: ");
-        double c = getValidInput(scanner, false, "Введите коэффициент c: ");
+        int type = getValidInput(scanner, false, "Введите номер типа уравнения: ");
+        Equation[] equations = new Equation[2];
 
-        QuadraticEquation equation = new QuadraticEquation(a, b, c);
+        if (type == 1) {
+            System.out.println("Эта программа вычисляет решение квадратного уравнения ax^2 + bx + c = 0.");
 
-        double discriminant = equation.calculateDiscriminant();
-        System.out.println("Дискриминант D = " + discriminant);
-        System.out.println(equation.getRoots());
+            double a = getValidInput(scanner, true, "Введите коэффициент a (не должен быть равен 0): ");
+            double b = getValidInput(scanner, false, "Введите коэффициент b: ");
+            double c = getValidInput(scanner, false, "Введите коэффициент c: ");
+
+            equations[0] = new QuadraticEquation(a, b, c);
+
+        } else {
+            System.out.println("Эта программа вычисляет решение линейного уравнения ax + b = 0.");
+
+            double a = getValidInput(scanner, true, "Введите коэффициент a (не должен быть равен 0): ");
+            double b = getValidInput(scanner, false, "Введите коэффициент b: ");
+
+            equations[0] = new LinearEquation(a, b);
+        }
+
+        System.out.println(equations[0]);
     }
 
-    private static double getValidInput(Scanner scanner, boolean isA, String prompt) {
+    private static int getValidInput(Scanner scanner, boolean isA, String prompt) {
+        System.out.println(prompt);
         while (true) {
-            System.out.print(prompt);
-            if (scanner.hasNextDouble()) {
-                double value = scanner.nextDouble();
+            if (scanner.hasNextInt()) {
+                int value = scanner.nextInt();
                 if (!isA || value != 0) {
                     return value;
                 } else {
                     System.out.print("Коэффициент a не может быть равен 0. Попробуйте еще раз: ");
                 }
             } else {
-                System.out.print("Некорректный ввод. Пожалуйста, введите число: ");
+                System.out.print("Некорректный ввод. Пожалуйста, введите целое число: ");
                 scanner.next();
             }
         }
