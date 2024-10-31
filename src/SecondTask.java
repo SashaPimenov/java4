@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class SecondTask {
@@ -12,7 +13,11 @@ public class SecondTask {
 
             switch (choice) {
                 case 1:
-                    calculateSolution(scanner);
+                    try {
+                        calculateSolution(scanner);
+                    } catch (InvalidCoefficientException e) {
+                        System.out.println("Ошибка: " + e.getMessage());
+                    }
                     break;
                 case 2:
                     menu.showProgramInfo();
@@ -30,7 +35,7 @@ public class SecondTask {
         }
     }
 
-    private static void calculateSolution(Scanner scanner) {
+    private static void calculateSolution(Scanner scanner) throws InvalidCoefficientException {
         System.out.println("Выберите тип уравнения:");
         System.out.println("1 - квадратное уравнение");
         System.out.println("любое другое число - линейное уравнение");
@@ -60,17 +65,17 @@ public class SecondTask {
         System.out.println(equations[0]);
     }
 
-    private static int getValidInput(Scanner scanner, boolean isA, String prompt) {
+    private static int getValidInput(Scanner scanner, boolean isA, String prompt) throws InvalidCoefficientException {
         System.out.println(prompt);
         while (true) {
-            if (scanner.hasNextInt()) {
+            try {
                 int value = scanner.nextInt();
                 if (!isA || value != 0) {
                     return value;
                 } else {
-                    System.out.print("Коэффициент a не может быть равен 0. Попробуйте еще раз: ");
+                    throw new InvalidCoefficientException("Коэффициент a не может быть равен 0.");
                 }
-            } else {
+            } catch (InputMismatchException e) {
                 System.out.print("Некорректный ввод. Пожалуйста, введите целое число: ");
                 scanner.next();
             }
