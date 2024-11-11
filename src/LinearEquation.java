@@ -1,4 +1,4 @@
-class LinearEquation extends Equation {
+class LinearEquation extends Equation implements Solvable, Comparable<LinearEquation>, Cloneable {
     private final double a;
     private final double b;
 
@@ -8,7 +8,7 @@ class LinearEquation extends Equation {
     }
 
     @Override
-    String getSolution() {
+    public String getSolution() {
         if (a == 0 && b == 0) {
             return "Уравнение имеет бесконечное количество решений.";
         } else {
@@ -28,4 +28,15 @@ class LinearEquation extends Equation {
         LinearEquation other = (LinearEquation) obj;
         return a == other.a && b == other.b;
     }
+
+    @Override
+    public int compareTo(LinearEquation other) {
+        return Double.compare(this.a, other.a);
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
 }

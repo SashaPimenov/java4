@@ -1,4 +1,4 @@
-class QuadraticEquation extends Equation {
+class QuadraticEquation extends Equation implements Solvable, Comparable<QuadraticEquation>, Cloneable {
     private final double a;
     private final double b;
     private final double c;
@@ -10,7 +10,7 @@ class QuadraticEquation extends Equation {
     }
 
     @Override
-    String getSolution() {
+    public String getSolution() {
         double discriminant = calculateDiscriminant();
         if (discriminant > 0) {
             return calculateTwoRoots(discriminant);
@@ -47,5 +47,15 @@ class QuadraticEquation extends Equation {
         if (obj == null || getClass() != obj.getClass()) return false;
         QuadraticEquation other = (QuadraticEquation) obj;
         return a == other.a && b == other.b && c == other.c;
+    }
+
+    @Override
+    public int compareTo(QuadraticEquation other) {
+        return Double.compare(this.a, other.a);
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }
