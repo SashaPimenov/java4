@@ -5,6 +5,7 @@ public class SecondTask {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Menu menu = new Menu(scanner);
+        EquationManager<Equation> manager = new EquationManager<>();
         boolean exit = false;
 
         while (!exit) {
@@ -42,7 +43,7 @@ public class SecondTask {
         System.out.print("Введите номер: ");
 
         int type = getValidInput(scanner, false, "Введите номер типа уравнения: ");
-        Equation[] equations = new Equation[2];
+        EquationManager<Equation> manager = new EquationManager<>();
 
         if (type == 1) {
             System.out.println("Эта программа вычисляет решение квадратного уравнения ax^2 + bx + c = 0.");
@@ -51,7 +52,7 @@ public class SecondTask {
             double b = getValidInput(scanner, false, "Введите коэффициент b: ");
             double c = getValidInput(scanner, false, "Введите коэффициент c: ");
 
-            equations[0] = new QuadraticEquation(a, b, c);
+            manager.addEquation(new QuadraticEquation(a, b, c));
 
         } else {
             System.out.println("Эта программа вычисляет решение линейного уравнения ax + b = 0.");
@@ -59,10 +60,10 @@ public class SecondTask {
             double a = getValidInput(scanner, true, "Введите коэффициент a (не должен быть равен 0): ");
             double b = getValidInput(scanner, false, "Введите коэффициент b: ");
 
-            equations[0] = new LinearEquation(a, b);
+            manager.addEquation(new LinearEquation(a, b));
         }
 
-        System.out.println(equations[0]);
+        manager.solveAll();;
     }
 
     private static int getValidInput(Scanner scanner, boolean isA, String prompt) throws InvalidCoefficientException {
