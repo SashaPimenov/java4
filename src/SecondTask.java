@@ -5,7 +5,6 @@ public class SecondTask {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Menu menu = new Menu(scanner);
-        EquationManager<Equation> manager = new EquationManager<>();
         boolean exit = false;
 
         while (!exit) {
@@ -63,7 +62,7 @@ public class SecondTask {
             manager.addEquation(new LinearEquation(a, b));
         }
 
-        manager.solveAll();;
+        manager.solveAll();
     }
 
     private static int getValidInput(Scanner scanner, boolean isA, String prompt) throws InvalidCoefficientException {
