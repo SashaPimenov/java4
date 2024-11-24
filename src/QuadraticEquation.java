@@ -38,7 +38,7 @@ class QuadraticEquation extends Equation implements Solvable, Comparable<Quadrat
 
     @Override
     public String toString() {
-        return "Решение квадратного уравнения: " + getSolution();
+        return String.format("Решение квадратного уравнения %.1fx^2 + %.1fx + %.1f: %s", this.a, this.b,this.c, getSolution());
     }
 
     @Override
@@ -47,6 +47,16 @@ class QuadraticEquation extends Equation implements Solvable, Comparable<Quadrat
         if (obj == null || getClass() != obj.getClass()) return false;
         QuadraticEquation other = (QuadraticEquation) obj;
         return a == other.a && b == other.b && c == other.c;
+    }
+
+    // нашел в интернете, что помимо equals надо реализовать хешкод, чтобы хешсет отрабатывал корректно
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + Double.hashCode(a);
+        result = 31 * result + Double.hashCode(b);
+        result = 31 * result + Double.hashCode(c);
+        return result;
     }
 
     @Override

@@ -36,33 +36,44 @@ public class SecondTask {
     }
 
     private static void calculateSolution(Scanner scanner) throws InvalidCoefficientException {
-        System.out.println("Выберите тип уравнения:");
-        System.out.println("1 - квадратное уравнение");
-        System.out.println("любое другое число - линейное уравнение");
-        System.out.print("Введите номер: ");
-
-        int type = getValidInput(scanner, false, "Введите номер типа уравнения: ");
         EquationManager<Equation> manager = new EquationManager<>();
+        String input;
+        while (true) {
+            scanner.nextLine();
+            System.out.println("Выберите пункт меню уравнений: ");
+            System.out.println("1 - ввести уравнения,");
+            System.out.println("2 - рассчитать уравнения,");
+            System.out.println("3 - завершение");
 
-        if (type == 1) {
-            System.out.println("Эта программа вычисляет решение квадратного уравнения ax^2 + bx + c = 0.");
+            input = scanner.nextLine().trim();
 
-            double a = getValidInput(scanner, true, "Введите коэффициент a (не должен быть равен 0): ");
-            double b = getValidInput(scanner, false, "Введите коэффициент b: ");
-            double c = getValidInput(scanner, false, "Введите коэффициент c: ");
+            switch (input) {
+                case "1":
+                    System.out.println("Квадратное уравнение ax^2 + bx + c = 0.");
+                    double a = getValidInput(scanner, true, "Введите коэффициент a (не должен быть равен 0): ");
+                    double b = getValidInput(scanner, false, "Введите коэффициент b: ");
+                    double c = getValidInput(scanner, false, "Введите коэффициент c: ");
+                    manager.addEquation(new QuadraticEquation(a, b, c));
 
-            manager.addEquation(new QuadraticEquation(a, b, c));
-
-        } else {
-            System.out.println("Эта программа вычисляет решение линейного уравнения ax + b = 0.");
-
-            double a = getValidInput(scanner, true, "Введите коэффициент a (не должен быть равен 0): ");
-            double b = getValidInput(scanner, false, "Введите коэффициент b: ");
-
-            manager.addEquation(new LinearEquation(a, b));
+                    System.out.println("Линейное уравнение ax + b = 0.");
+                    double aLinear = getValidInput(scanner, true, "Введите коэффициент a (не должен быть равен 0): ");
+                    double bLinear = getValidInput(scanner, false, "Введите коэффициент b: ");
+                    manager.addEquation(new LinearEquation(aLinear, bLinear));
+                    break;
+                case "2":
+                    if (manager.getEquationCount() > 0) {
+                        manager.solveAll();
+                    } else {
+                        System.out.println("Нет введенных уравнений для расчета.");
+                        break;
+                    }
+                    break;
+                case "3":
+                    return;
+                default:
+                    System.out.println("Некорректный ввод. Пожалуйста, введите 1, 2 или 3.");
+            }
         }
-
-        manager.solveAll();
     }
 
     private static int getValidInput(Scanner scanner, boolean isA, String prompt) throws InvalidCoefficientException {

@@ -18,7 +18,7 @@ class LinearEquation extends Equation implements Solvable, Comparable<LinearEqua
 
     @Override
     public String toString() {
-        return "Решение линейного уравнения: " + getSolution();
+        return String.format("Решение линейного уравнения %.1fx^2 + %.1f: %s", this.a, this.b, getSolution());
     }
 
     @Override
@@ -28,6 +28,16 @@ class LinearEquation extends Equation implements Solvable, Comparable<LinearEqua
         LinearEquation other = (LinearEquation) obj;
         return a == other.a && b == other.b;
     }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + Double.hashCode(a);
+        result = 31 * result + Double.hashCode(b);
+        return result;
+    }
+
+
 
     @Override
     public int compareTo(LinearEquation other) {
